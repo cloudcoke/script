@@ -12,7 +12,7 @@ echo -n "Re-enter your password : "
 read -s RPW
 echo
 
-if [ $PW == $RPW ]; then
+if [ "$PW" == "$RPW" ]; then
     break
 else 
     echo "Passwords do not match."
@@ -34,7 +34,7 @@ echo -n "Re-enter your password : "
 read -s USERRPW
 echo
 
-if [ $USERPW == $USERRPW ]; then
+if [ "$USERPW" == "$USERRPW" ]; then
     break
 else 
     echo "Passwords do not match."
