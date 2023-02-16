@@ -5,7 +5,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt install mysql-server -y
 sudo systemctl start mysql
 
 while :;do 
-echo -n "Enter the password of the root account to use : "
+echo -n "Enter the password of the Mysql root account to use : "
 read -s PW
 echo
 echo -n "Re-enter your password : " 
@@ -22,10 +22,10 @@ done
 sudo mysql -u root -e "alter user 'root'@'localhost' identified with mysql_native_password by '$PW'"
 sleep 1
 echo 
-echo "Complete root Password"
+echo "Complete Mysql root Password set"
 echo
 
-read -p "Enter the create user name : " USERNAME
+read -p "Enter the create Mysql user name : " USERNAME
 while :;do 
 echo -n "Enter the password of the $USERNAME account to use : "
 read -s USERPW
@@ -41,7 +41,7 @@ else
 fi
 done
 
-read -p "Enter the create database name : " DBNAME
+read -p "Enter the create Mysql database name : " DBNAME
 
 sudo mysql -u root -p$PW <<QUERY
 create user '$USERNAME'@'%' identified with mysql_native_password by '$USERPW';
