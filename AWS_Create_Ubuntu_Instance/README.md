@@ -7,5 +7,5 @@
 # 사용
 
 ```bash
-curl -O https://raw.githubusercontent.com/cloudcoke/script/blob/main/AWS_Create_Ubuntu_Instance/createInstance.sh && bash createInstance.sh
+curl -O https://raw.githubusercontent.com/cloudcoke/script/main/AWS_Create_Ubuntu_Instance/createInstance.sh && bash createInstance.sh
 ```
