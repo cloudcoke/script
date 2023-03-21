@@ -5,3 +5,7 @@
    1. 확인 방법 : `aws configure list`
 
 # 사용
+
+```bash
+curl -O https://raw.githubusercontent.com/cloudcoke/script/blob/main/AWS_Create_Ubuntu_Instance/createInstance.sh && bash createInstance.sh
+```
