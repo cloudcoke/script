@@ -23,6 +23,8 @@ NGINX_CONF="/etc/nginx/sites-available/default"
 # 리버스 프록시 적용
 sudo cp $NGINX_CONF $NGINX_CONF.bak
 sudo sed -i '1,92d' $NGINX_CONF
+sudo sed -i 's|root /var/www/html;||g' $NGINX_CONF
+sudo sed -i 's|index index.html index.htm index.nginx-debian.html;||g' $NGINX_CONF
 sudo sed -i 's|location / {|location / {\n\t\tproxy_set_header HOST $host;\n\t\tproxy_pass http://127.0.0.1:3000;\n\t\tproxy_redirect off;|' $NGINX_CONF
 sudo sed -i 's|try_files $uri $uri/ =404;||g' $NGINX_CONF
 
