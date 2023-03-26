@@ -6,11 +6,14 @@ sudo apt-get install nginx snapd -y
 # 부팅 시 자동 시작
 sudo systemctl enable nginx
 
+# nginx 설정 파일 경로
+NGINX_CONF="/etc/nginx/sites-available/default"
+
 # nginx 파일 수정
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-sudo sed -i 's|root /var/www/html;|root /home/ubuntu/www/build;|g' /etc/nginx/sites-available/default
-sudo sed -i 's|index index.html index.htm index.nginx-debian.html;|index index.html;|g' /etc/nginx/sites-available/default
-sudo sed -i 's|try_files $uri $uri/ =404;|try_files $uri $uri/ index.html;|g' /etc/nginx/sites-available/default
+sudo cp $NGINX_CONF $NGINX_CONF.bak
+sudo sed -i 's|root /var/www/html;|root /home/ubuntu/www/build;|g' $NGINX_CONF
+sudo sed -i 's|index index.html index.htm index.nginx-debian.html;|index index.html;|g' $NGINX_CONF
+sudo sed -i 's|try_files $uri $uri/ =404;|try_files $uri $uri/ index.html;|g' $NGINX_CONF
 
 # 테스트를 위한 작업
 mkdir -p www/build
