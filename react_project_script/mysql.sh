@@ -66,6 +66,7 @@ sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_SERVER/}" $M
 sudo mysql -u root -p"${SECRET}" <<QUERY
     create database $DBNAME;
     create user '$USER'@'"${BACK_DNS}"' identified with mysql_native_password by "${PASSWORD}";
+    create user '$USER'@'"${BACK_SERVER}"' identified with mysql_native_password by "${PASSWORD}";
     grant all privileges on $DBNAME.* to '$USER'@'"${BACK_DNS}"' with grant option;
     grant all privileges on $DBNAME.* to '$USER'@'"${BACK_SERVER}"' with grant option;
 QUERY
