@@ -57,7 +57,9 @@ echo "root 패스워드 설정 완료"
 
 # mysql 접속 허용 주소 설정
 BACK_SERVER=$(nslookup $BACK_DNS | awk '/^Address: / { print $2 }')
-sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_SERVER/}" /etc/mysql/mysql.conf.d/mysqld.cnf
+MYSQL_CONF="/etc/mysql/mysql.conf.d/mysqld.cnf"
+sudo cp $MYSQL_CONF $MYSQL_CONF.bak
+sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_SERVER/}" $MYSQL_CONF
 
 
 # DB 생성 및 USER 생성
