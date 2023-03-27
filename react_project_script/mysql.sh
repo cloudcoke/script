@@ -1,32 +1,32 @@
-#!/usr/bin/env bash
+#!/ulslr/bin/env bash
 
 # 기본값
 SECRET=password
 DBNAME=hello
 USER=admin
 PASSWORD=password
-BACK_DNS=api.cloudcoke.site
+BACK_DNS="api.cloudcoke.site"
 
 # 입력된 인자가 있는지 확인하고 변수 변경
 while getopts "s:u:p:i:d:" opt; do
     case $opt in
     s)
-        SECRET=$OPTARG
+        SECRET="$OPTARG"
         ;;
 
     u)
-        USER=$OPTARG
+        USER="$OPTARG"
         ;;
     p)
-        PASSWORD=$OPTARG
+        PASSWORD="$OPTARG"
         ;;
 
     i)  
-        BACK_DNS=$OPTARG
+        BACK_DNS="$OPTARG"
         ;;
 
     d)
-        DBNAME=$OPTARG
+        DBNAME="$OPTARG"
         ;;
 
     \?)
@@ -47,16 +47,17 @@ sudo apt install mysql-server -y
 sudo systemctl start mysql
 
 # root 패스워드 설정
-sudo mysql -u root -e "alter user 'root'@'localhost identified with mysql_native_password by '$SECRET'"
+sudo mysql -u root -e "alter user 'root'@'localhost' identified with mysql_native_password by '${SECRET}'"
+sudo mysql -u root -e "alter user 'root'@'localhost' identified with mysql_native_password by 'hello'"
 
 # mysql 접속 허용 주소 설정
 BACK_SERVER=$(nslookup $BACK_DNS | awk '/^Address: / { print $2 }')
 sudo sed -i '0,/bind-address/{s/bind-address.*/bind-address = $BACK_DNS/}' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # DB 생성 및 USER 생성
-sudo mysql -u root -p$SECRET <<QUERY
+sudo mysql -u root -p"${SECRET}" <<QUERY
     create database $DBNAME
-    create user '$USER'@'$BACK_DNS' identified with mysql_native_password by '$PASSWORD';
+    create user '$USER'@'$BACK_DNS' identified with mysql_native_password by "${PASSWORD}";
     grant all privileges on $DBNAME.* to '$USER'@'$BACK_DNS' with grant option;
 QUERY
 
