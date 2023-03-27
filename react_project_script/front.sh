@@ -80,7 +80,7 @@ while :; do
 
         ## 탄력적 IP 태그 지정
         ALLOCATION_ID=$(aws ec2 describe-addresses --public-ips $STATIC_IP --query 'Addresses[0].AllocationId' --output text)
-        aws ec2 create-tags --resources $ALLOCATION_ID --tags Key=Name,Value=backend
+        aws ec2 create-tags --resources $ALLOCATION_ID --tags Key=Name,Value=frontend
          if [ $? -ne 0 ]; then
             echo "Set static IP tag command failed"
         exit 1
