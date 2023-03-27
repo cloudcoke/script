@@ -67,6 +67,7 @@ sudo mysql -u root -p"${SECRET}" <<QUERY
     create database $DBNAME;
     create user '$USER'@'"${BACK_DNS}"' identified with mysql_native_password by "${PASSWORD}";
     grant all privileges on $DBNAME.* to '$USER'@'"${BACK_DNS}"' with grant option;
+    grant all privileges on $DBNAME.* to '$USER'@'"${BACK_SERVER}"' with grant option;
 QUERY
 if [ $? -ne 0 ]; then
     echo "DB Create & User Create failed"
