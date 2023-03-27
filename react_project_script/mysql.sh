@@ -48,10 +48,17 @@ sudo systemctl start mysql
 
 # root 패스워드 설정
 sudo mysql -u root -e "alter user 'root'@'localhost' identified with mysql_native_password by '${SECRET}'"
+if [ $? -ne 0 ]; then
+    echo "root password setting failed"
+    exit 1
+fi
+
+echo "root 패스워드 설정 완료"
 
 # mysql 접속 허용 주소 설정
 BACK_SERVER=$(nslookup $BACK_DNS | awk '/^Address: / { print $2 }')
 sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_SERVER/}" /etc/mysql/mysql.conf.d/mysqld.cnf
+
 
 # DB 생성 및 USER 생성
 sudo mysql -u root -p"${SECRET}" <<QUERY
@@ -59,6 +66,13 @@ sudo mysql -u root -p"${SECRET}" <<QUERY
     create user '$USER'@'"${BACK_DNS}"' identified with mysql_native_password by "${PASSWORD}";
     grant all privileges on $DBNAME.* to '$USER'@'"${BACK_DNS}"' with grant option;
 QUERY
+if [ $? -ne 0 ]; then
+    echo "DB Create & User Create failed"
+    exit 1
+fi
+
+echo "DB 생성 및 USER 생성 완료"
 
 # 재시작 및 등록
-sudo systemctl restart mysql && sudo systemctl enable mysql
+sudo systemctl restart mysql 
+sudo systemctl enable mysql
