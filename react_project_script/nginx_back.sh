@@ -1,4 +1,29 @@
 #!/usr/bin/env bash
+
+# 기본값
+DOMAIN="api.cloudcoke.site"
+EMAIL="cloudcoke.dev@gmail.com"
+
+# 입력된 인자가 있는지 확인하고 변수 변경
+while getopts "d:m:" opt; do
+    case $opt in
+        d)
+            DOMAIN=$OPTARG
+            ;;
+        m)
+            EMAIL=$OPTARG
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
+    esac
+done
+
 # 패키지 설치
 sudo apt-get update
 sudo apt-get install nginx snapd -y
@@ -12,7 +37,7 @@ sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
-sudo certbot --nginx -d api.cloudcoke.site -m cloudcoke.dev@gmail.com --non-interactive --agree-tos
+sudo certbot --nginx -d $DOMAIN -m $EMAIL --non-interactive --agree-tos
 
 # 인증서 갱신 설정
 sudo certbot renew --dry-run
