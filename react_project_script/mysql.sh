@@ -51,7 +51,7 @@ sudo mysql -u root -e "alter user 'root'@'localhost' identified with mysql_nativ
 
 # mysql 접속 허용 주소 설정
 BACK_SERVER=$(nslookup $BACK_DNS | awk '/^Address: / { print $2 }')
-sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_DNS/}" /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_SERVER/}" /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # DB 생성 및 USER 생성
 sudo mysql -u root -p"${SECRET}" <<QUERY
