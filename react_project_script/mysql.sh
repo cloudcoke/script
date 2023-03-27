@@ -8,7 +8,7 @@ PASSWORD=password
 BACK_DNS=api.cloudcoke.site
 
 # 입력된 인자가 있는지 확인하고 변수 변경
-while getopts "s:p:u:i:" opt; do
+while getopts "s:u:p:i:d:" opt; do
     case $opt in
     s)
         SECRET=$OPTARG
