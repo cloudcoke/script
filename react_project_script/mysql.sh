@@ -3,7 +3,7 @@
 # 기본값
 SECRET=password
 DBNAME=hello
-USER=admin
+USERNAME=admin
 PASSWORD=password
 BACK_DNS="api.cloudcoke.site"
 
@@ -15,7 +15,7 @@ while getopts "s:u:p:i:d:" opt; do
         ;;
 
     u)
-        USER="$OPTARG"
+        USERNAME="$OPTARG"
         ;;
     p)
         PASSWORD="$OPTARG"
@@ -56,17 +56,20 @@ fi
 echo "root 패스워드 설정 완료"
 
 # mysql 접속 허용 주소 설정
-BACK_SERVER=$(nslookup $BACK_DNS | awk '/^Address: / { print $2 }')
+MY_IP=$(ip a show eth0 | awk '/inet / {split($2, a, "/"); print a[1]}')
 MYSQL_CONF="/etc/mysql/mysql.conf.d/mysqld.cnf"
 sudo cp $MYSQL_CONF $MYSQL_CONF.bak
-sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $BACK_SERVER/}" $MYSQL_CONF
+sudo sed -i "0,/bind-address/{s/bind-address.*/bind-address = $MY_IP/}" $MYSQL_CONF
 
 
 # DB 생성 및 USER 생성
+BACK_SERVER=$(nslookup $BACK_DNS | awk '/^Address: / { print $2 }')
 sudo mysql -u root -p"${SECRET}" <<QUERY
     create database $DBNAME;
-    grant all privileges on $DBNAME.* to '$USER'@'"${BACK_DNS}"' identified by "${PASSWORD}" with grant option;
-    grant all privileges on $DBNAME.* to '$USER'@'"${BACK_SERVER}"' identified by "${PASSWORD}" with grant option;
+    create user "$USERNAME"@"${BACK_DNS}" identified with mysql_native_password by "${PASSWORD}";
+    create user "$USERNAME"@"${BACK_SERVER}" identified with mysql_native_password by "${PASSWORD}";
+    grant all privileges on $DBNAME.* to '$USERNAME'@"${BACK_DNS}" with grant option;
+    grant all privileges on $DBNAME.* to '$USERNAME'@"${BACK_SERVER}" with grant option;
 QUERY
 if [ $? -ne 0 ]; then
     echo "DB Create & User Create failed"
