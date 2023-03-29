@@ -102,6 +102,8 @@ while :; do
         # 접속 주소 출력
         PDNS=$(aws ec2 describe-instances --instance-ids $INSTANCE --query 'Reservations[*].Instances[*].PublicDnsName' --output text)
 
+        echo "탄력적 IP"
+        echo "$STATIC_IP"
         echo "아래 주소를 복사해서 접속하세요."
         echo ""
         echo "ssh -i $KEYPAIR_NAME.pem ubuntu@$PDNS"

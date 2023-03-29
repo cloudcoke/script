@@ -58,7 +58,7 @@ sudo systemctl restart nginx
 # node 설치
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.nvm/nvm.sh
-nvm install node --lts
+nvm install 18.15
 
 npm install -g npm@latest
 npm install pm2 -g
