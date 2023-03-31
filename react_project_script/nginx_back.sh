@@ -39,8 +39,11 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
 sudo certbot --nginx -d $DOMAIN -m $EMAIL --non-interactive --agree-tos
 
-# 인증서 갱신 설정
+# 인증서 갱신 확인
 sudo certbot renew --dry-run
+
+# 인증서 갱신 cron 등록
+cat <(crontab -l 2>/dev/null) <(echo '0 18 1 * * sudo certbot renew --renew-hook="sudo systemctl restart nginx"') | crontab - > /dev/null 2>&1
 
 # nginx 설정 파일 경로
 NGINX_CONF="/etc/nginx/sites-available/default"
