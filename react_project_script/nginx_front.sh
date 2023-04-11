@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 # 기본값
-DOMAIN="www.cloudcoke.site"
+DOMAIN="cloudcoke.site"
 EMAIL="cloudcoke.dev@gmail.com"
 
 # 입력된 인자가 있는지 확인하고 변수 변경
 while getopts "d:m:" opt; do
     case $opt in
-        d)
+        d) # -d (도메인 주소)
             DOMAIN=$OPTARG
             ;;
-        m)
+        m) # -m (이메일 주소)
             EMAIL=$OPTARG
             ;;
         \?)
@@ -38,7 +38,7 @@ NGINX_CONF="/etc/nginx/sites-available/default"
 sudo cp $NGINX_CONF $NGINX_CONF.bak
 sudo sed -i 's|root /var/www/html;|root /home/ubuntu/www/build;|g' $NGINX_CONF
 sudo sed -i 's|index index.html index.htm index.nginx-debian.html;|index index.html;|g' $NGINX_CONF
-sudo sed -i 's|try_files $uri $uri/ =404;|try_files $uri $uri/ index.html;|g' $NGINX_CONF
+sudo sed -i 's|try_files $uri $uri/ =404;|if ( !-e $request_filename ) {rewrite ^(.*)$ /index.html break;}|g' $NGINX_CONF
 
 # 테스트를 위한 작업
 mkdir -p www/build
@@ -50,6 +50,7 @@ sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
+# nginx https 인증서 적용
 sudo certbot --nginx -d $DOMAIN -m $EMAIL --non-interactive --agree-tos
 
 # 인증서 갱신 확인

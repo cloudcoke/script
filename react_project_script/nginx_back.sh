@@ -7,10 +7,10 @@ EMAIL="cloudcoke.dev@gmail.com"
 # 입력된 인자가 있는지 확인하고 변수 변경
 while getopts "d:m:" opt; do
     case $opt in
-        d)
+        d) # -d (도메인 주소)
             DOMAIN=$OPTARG
             ;;
-        m)
+        m) # -m (이메일 주소)
             EMAIL=$OPTARG
             ;;
         \?)
@@ -37,6 +37,7 @@ sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
+# nginx https 인증서 적용
 sudo certbot --nginx -d $DOMAIN -m $EMAIL --non-interactive --agree-tos
 
 # 인증서 갱신 확인
@@ -58,14 +59,18 @@ sudo sed -i 's|try_files $uri $uri/ =404;||g' $NGINX_CONF
 
 sudo systemctl restart nginx
 
-# node 설치
+# node lts 버전 설치
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.nvm/nvm.sh
-nvm install 18.15
+nvm install --lts
 
+# npm 최신 버전 설치
 npm install -g npm@latest
+
+# pm2 설치
 npm install pm2 -g
 
+# 테스트 파일 다운로드 후 실행
 mkdir www && cd www
 curl -O https://raw.githubusercontent.com/cloudcoke/script/main/react_project_script/server.js
 pm2 start server.js --watch
