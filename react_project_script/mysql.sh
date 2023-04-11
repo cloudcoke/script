@@ -10,22 +10,22 @@ BACK_DNS="api.cloudcoke.site"
 # 입력된 인자가 있는지 확인하고 변수 변경
 while getopts "s:u:p:i:d:" opt; do
     case $opt in
-    s)
+    s) # -s (root 패스워드)
         SECRET="$OPTARG"
         ;;
 
-    u)
+    u) # -u (유저 이름)
         USERNAME="$OPTARG"
         ;;
-    p)
+    p) # -p (유저 패스워드)
         PASSWORD="$OPTARG"
         ;;
 
-    i)  
+    i) # -i (서버 DNS 주소)
         BACK_DNS="$OPTARG"
         ;;
 
-    d)
+    d) # -d (Database 이름)
         DBNAME="$OPTARG"
         ;;
 

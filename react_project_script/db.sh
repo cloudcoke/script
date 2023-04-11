@@ -3,7 +3,7 @@
 KEYPAIR_NAME=db
 BACK_DNS=api.terminus.run
 
-# front 키페어 생성
+# db 키페어 생성
 aws ec2 create-key-pair --key-name $KEYPAIR_NAME --query 'KeyMaterial' --output text > $KEYPAIR_NAME.pem
 
 if [ $? -ne 0 ]; then
