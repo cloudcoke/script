@@ -1,4 +1,5 @@
 const http = require("http")
+const myHostName = process.env.HOSTNAME
 
 const hostname = "localhost"
 const port = 3000
@@ -11,7 +12,7 @@ const server = http.createServer((req, res) => {
   } else {
     res.statusCode = 200
     res.setHeader("Content-Type", "text/plain")
-    res.end("Hello, World!\n")
+    res.end(`Hello, I'm ${myHostName}\n`)
   }
 })
 
