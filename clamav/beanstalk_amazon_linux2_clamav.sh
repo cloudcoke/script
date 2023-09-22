@@ -1,8 +1,8 @@
 #!/bin/bash
 
-sudo cp /etc/clamd.d/scan.conf /etc/clamd.d/scan.conf.bak
+cp /etc/clamd.d/scan.conf /etc/clamd.d/scan.conf.bak
 
-sudo bash -c 'cat <<EOF > /etc/clamd.d/scan.conf
+cat <<EOF > /etc/clamd.d/scan.conf
 LogFile /var/log/clamd.scan
 LogTime yes
 
@@ -20,13 +20,13 @@ OnAccessPrevention yes
 OnAccessExtraScanning yes
 OnAccessExcludeRootUID yes
 OnAccessExcludeUname clamav
-EOF'
+EOF
 
-sudo cp /etc/freshclam.conf /etc/freshclam.conf.bak
+cp /etc/freshclam.conf /etc/freshclam.conf.bak
 
-sudo sed -i 's|#LogSyslog yes|LogSyslog yes|g' /etc/freshclam.conf
-sudo sed -i 's|#NotifyClamd /path/to/clamd.conf|NotifyClamd /etc/clamd.d/scan.conf|g' /etc/freshclam.conf
+sed -i 's|#LogSyslog yes|LogSyslog yes|g' /etc/freshclam.conf
+sed -i 's|#NotifyClamd /path/to/clamd.conf|NotifyClamd /etc/clamd.d/scan.conf|g' /etc/freshclam.conf
 
-sudo freshclam
+freshclam
 
-sudo systemctl enable --now clamd@scan clamav-clamonacc.service clamav-freshclam.service
+systemctl enable --now clamd@scan clamav-clamonacc.service clamav-freshclam.service
